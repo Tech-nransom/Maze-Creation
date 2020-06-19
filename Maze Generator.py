@@ -3,10 +3,6 @@ width = int(input("Enter The Width:"))
 height = int(input("Enter The Height:"))
 
 def grid(width,height,sym_ver="+",sym_col="+"):
-##    ver = [f"{sym_ver} " for i in range(width+1)]
-##    hor = [f"{sym_col}"*2 for i in range(width)]
-##    ver = [f"{sym_ver} " for i in range(width+1)]
-##    hor = [f"{sym_col}"*2 for i in range(width)]
     if(height%2 != 1):
         height += 1
     if width%2 != 1:
@@ -20,29 +16,18 @@ def grid(width,height,sym_ver="+",sym_col="+"):
             
             ver = ""
             hor = ""
-            #print("#"*width)
             hor += "#"*width
             walls.append([hor])
             __ = 0
             if _< height//2:
                 while __ != width:
-                    #print("#",end="")
                     __ += 1
                     ver += "#" 
                     if __ <width-1:
-                        #print(" ",end="")
                         __ += 1
                         ver += " "
                     
-            walls.append([ver])
-##    a = " "
-##    #walls.append([a if ( _ == width) "#" else " " for _ in range(width+1) ])
-##    for i in range(width):
-##        if i==width-1:
-##            a+="#"
-##        else:
-##            a+=" "
-##            
+            walls.append([ver]) 
     walls.append([hor])
     return walls
 
@@ -53,25 +38,10 @@ def wall_matrix(width,height,filename,sym_ver="+",sym_hor="+"):
     for i in range(len(gd)):
         for j in range(len(gd[i])):
             file.write(gd[i][j])
-            #print(gd[i][j])
-            #if gd[i][j] == f"{sym_hor}"*3 or gd[i][j].find() 
-                #walls.append(True)
-            #else:
-                #walls.append(False)
         file.write("\n")
     file.close()
     with open(filename) as f:
             contents = f.read()
-        #print(type(contents))
-        #print(contents)
-
-        # Validate start and goal
-##        if contents.count("A") != 1:
-##            raise Exception("maze must have exactly one start point")
-##        if contents.count("B") != 1:
-##            raise Exception("maze must have exactly one goal")
-
-        # Determine height and width of maze
     contents = contents.splitlines()
     h = len(contents)
     w = max(len(line) for line in contents)
@@ -90,23 +60,16 @@ def wall_matrix(width,height,filename,sym_ver="+",sym_hor="+"):
                     goal = (i, j)
                     row.append(False)
                 elif contents[i][j] == " ":
-                    #spaces += 1
                     allowed.append((i,j))
                     row.append(False)
                 else:
                     row.append(True)
             except IndexError:
-                #allowed.append((i,j))
-                #row.append(False)
                 pass
         walls.append(row)
-
-        #solution = None
-        #print(walls)
     go = []
     for row in range(1,h,2):
         go.append([(row,col) for col in range(1,w+1,2)])
-    #print(go)
     def IsConnected(node):
         row = node[0]
         col = node[1]
@@ -141,15 +104,12 @@ def wall_matrix(width,height,filename,sym_ver="+",sym_hor="+"):
     
     def DFS(mat):
         start = mat[0][0]
-        #goal = mat[-1][-1]
         visited = [start]
         stack = [start]
         path = []
-        #distance = []
         l = []
         for i in range(h):
             path.append([0 for j in range(w+1)])
-            #distance.append([0 for j in range(h+1)])
         while stack != []:
             node = stack.pop(-1)
             conn,rub = IsConnected(node)
@@ -158,13 +118,8 @@ def wall_matrix(width,height,filename,sym_ver="+",sym_hor="+"):
                     l.append((rub[i][0],rub[i][1]))
                     visited.append(conn[i])
                     stack.append((conn[i]))
-                    #distance[conn[i][0]] [conn[i][1]] = distance[node[0]][node[1]] + 1
-                    #print(node[0],node[1])
-                    #print("------->",path[conn[i][0]][conn[i][1]])
                     r,c = node
                     path[conn[i][0]][conn[i][1]] = (r,c)
-                    #print(r,c)
-        #print(visited)
         return visited,l
         
 
@@ -177,15 +132,12 @@ def wall_matrix(width,height,filename,sym_ver="+",sym_hor="+"):
     file = open(filename,"w")
     for i in range(len(contents)):
         for j in range(len(contents[i])):
-            #print(walls[i][j],end="")
             if (i,j) in visited or (i,j) in l:
-                #walls[i][j]==" "
                 print(" ",end="")
                 file.write(" ")
             else:
                 print("█",end="")
                 file.write("#")
-##                print("#",end="")
         print()
         file.write("\n")
     
